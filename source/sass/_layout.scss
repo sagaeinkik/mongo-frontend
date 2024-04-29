@@ -1,0 +1,316 @@
+@use 'assets' as a;
+
+//Gör grid av hela sidan: header till höger, content till vänster
+.grid-container {
+    display: grid;
+    grid-template-columns: 7fr 2fr;
+    grid-template-areas: 'content header';
+    position: relative;
+}
+
+main {
+    grid-area: content;
+}
+
+header {
+    background-color: a.$blue;
+    grid-area: header;
+    height: 100%;
+    position: relative;
+    //Credits
+    p.credits {
+        position: absolute;
+        bottom: 5px;
+        width: 100%;
+        color: white;
+        font-size: 0.7em;
+        padding: 0.8em;
+    }
+}
+
+//Hamburgerknapp
+.burgerbtn {
+    border: none;
+    background-color: a.$lightgrey;
+    /* position: relative; */
+    position: fixed;
+    z-index: 32;
+    right: 20px;
+    /* left: 20px; */
+    top: 20px;
+    display: none;
+    @include a.transition;
+    cursor: pointer;
+    //Hamburger-strecken
+    span.burger-bar {
+        display: block;
+        margin: 5px;
+        width: 30px;
+        height: 3px;
+        background-color: a.$blue;
+        @include a.transition;
+    }
+    //Hamburgerknapp aktiv
+    &.active {
+        background-color: rgba(0, 0, 0, 0);
+        //Färger och rotering för aktiva hamburgerstreck
+        span.burger-bar {
+            background-color: a.$orange;
+        }
+        span.burger-bar:first-child {
+            transform: translateY(8px) rotate(225deg);
+        }
+        span.burger-bar:nth-child(2) {
+            opacity: 0;
+        }
+        span.burger-bar:last-child {
+            transform: translateY(-8px) rotate(-225deg);
+        }
+        //Hovereffekt aktiv burgare
+        &:hover {
+            span.burger-bar {
+                background-color: a.$lightgrey;
+            }
+        }
+    }
+    //Hovereffekt inaktiv
+    &:hover {
+        span.burger-bar {
+            background-color: a.$orange;
+        }
+    }
+}
+/* Navigering desktop */
+nav {
+    ul {
+        //Gör kolumn av list items, positionera ut dem
+        display: flex;
+        flex-direction: column;
+        height: 40vh;
+        justify-content: space-evenly;
+        align-items: center;
+
+        //Länkarna i menyn
+        li a {
+            @include a.transition;
+        }
+        li a:hover {
+            color: a.$orange;
+        }
+        //Indikation vilken sidaa
+        li a[aria-current='page'] {
+            color: a.$orange;
+        }
+    }
+}
+
+//bild + headings: gör grid, placera bredvid varandra
+.landinginfo {
+    width: 95%;
+    margin: 2em auto;
+    display: grid;
+    grid-template-columns: 4fr 5fr;
+    grid-template-areas: 'img info';
+    grid-gap: 1em;
+
+    img {
+        //lite fade in
+        width: 100%;
+        animation: fadeIn 2s;
+        margin-left: 2em;
+        grid-area: img;
+    }
+
+    .landinginfo-text {
+        //Fade in på texten, stapla som kolumn
+        margin-top: 2em;
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        animation: fadeNSlide 2.3s;
+        position: relative;
+        grid-area: info;
+    }
+}
+
+//Lista för jobberfarenheter
+div.experience-container {
+    //Fade in
+    animation: delayFade 2s;
+    width: 70%;
+    margin: 4em auto 0;
+
+    h2 {
+        font-size: 2em;
+        border-bottom: 2px solid a.$blue;
+    }
+
+    //Jobbartiklar
+    article {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        border-bottom: 2px solid a.$blue;
+        padding: 1.5em 1em;
+
+        p.jobtitle {
+            font-weight: bold;
+            font-size: 1.2em;
+            display: inline;
+        }
+        span.dates {
+            margin-left: 1em;
+            font-size: 0.9em;
+            color: a.$midgrey;
+        }
+        p.jobdesc {
+            max-width: 35em;
+            margin-top: 0.4em;
+            font-size: 1.1em;
+            line-height: 1.7;
+        }
+    }
+    article:last-child {
+        margin-bottom: 4em;
+    }
+    //Ändra/radera-knappar
+    div.controls {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+
+        button {
+            padding: 0.4em;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            @include a.transition;
+
+            i {
+                font-size: 1.5em;
+                color: white;
+            }
+        }
+        .edit {
+            background-color: a.$blue;
+
+            &:hover {
+                background-color: darken(a.$blue, 15%);
+            }
+        }
+        .delete {
+            background-color: a.$orange;
+            &:hover {
+                background-color: darken(a.$orange, 15%);
+            }
+        }
+    }
+}
+
+//LÄGG TILL-sidan
+div.add-headlines {
+    width: fit-content;
+    margin: 4em auto;
+}
+
+//Formulär
+form {
+    width: 55%;
+    margin: auto;
+    //error-meddelande
+    span.error {
+        display: block;
+        margin: 0 0 1em 1em;
+        color: red;
+    }
+    //Allmänna regler för fält och knappar
+    input,
+    textarea {
+        display: block;
+        width: 100%;
+        padding: 0.7em;
+        font-size: 1em;
+        font-family: a.$bread;
+        border-radius: 20px;
+        border: 2.5px solid a.$blue;
+        margin-bottom: 1.5em;
+        background-color: rgba(0, 0, 0, 0);
+        color: a.$midgrey;
+    }
+    //Jobbeskrivning
+    textarea {
+        height: 10em;
+        padding: 1em;
+    }
+    //skicka in-knappen
+    input[type='submit'] {
+        width: fit-content;
+        margin-top: 2em;
+        font-size: 1.2em;
+        padding: 0.7em 1.2em;
+        background-color: a.$orange;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-family: a.$h2;
+        @include a.transition;
+
+        &:hover {
+            background-color: a.$blue;
+        }
+    }
+    //datum
+    input[type='date']::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+    }
+    //Teckenräknare
+    span.charcount {
+        font-size: 0.7em;
+        margin-left: 70%;
+    }
+    //Div runt start- och slutdatum, gör flex och space between
+    div.date-container {
+        width: 70%;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+    }
+    //Text om att lämna blankt
+    p.instruction {
+        font-size: 0.9em;
+    }
+    //Specifikt slutdatum
+    #endDate {
+        margin-bottom: 0.5em;
+    }
+    label {
+        font-size: 1.1em;
+        margin-left: 0.9em;
+    }
+}
+
+//Om-sidan
+div.about {
+    max-width: 40em;
+    margin: 4em auto;
+
+    h2 {
+        font-size: 2em;
+        border-bottom: 2px solid a.$blue;
+        margin-top: 1em;
+    }
+
+    p {
+        margin-top: 1em;
+    }
+    a {
+        color: a.$blue;
+        text-decoration: 2px dotted underline;
+
+        &:hover {
+            color: a.$orange;
+        }
+    }
+}
